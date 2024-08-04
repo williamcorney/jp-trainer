@@ -135,8 +135,7 @@ try:
     ignore_velocity = True if "--ignore_velocity" in sys.argv else False
     sustain = True if "--sustain" in sys.argv else False
     sampler = Sampler(mixer, ignore_velocity, sustain)
-    print(mido.get_input_names())
-    portname = "microKEY-37 1 KEYBOARD 0"  # replace with your MIDI INPUT
+    portname = (mido.get_input_names()[0]) # replace with your MIDI INPUT
     with mido.open_input(portname, callback=note_handler) as port:
         print("Using {}".format(port))
         note_ui.window.mainloop()
