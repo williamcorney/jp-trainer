@@ -2,8 +2,8 @@ from tkinter import *
 
 from PIL import Image, ImageTk
 
-WINDOW_HEIGHT = 800
-WINDOW_WIDTH = 1913
+WINDOW_HEIGHT = 500
+WINDOW_WIDTH = 1060
 
 IMAGE_NAMES = [
     "key_green_left",
@@ -31,56 +31,11 @@ NOTES_TO_IMAGE_MAP = {
     12: "left",
 }
 NOTES_Y = 401
-NOTES_X = {
-    36: 3,
-    37: 52,
-    38: 71,
-    39: 120,
-    40: 139,
-    41: 207,
-    42: 256,
-    43: 275,
-    44: 324,
-    45: 343,
-    46: 393,
-    47: 412,
-    48: 480,
-    49: 529,
-    50: 548,
-    51: 597,
-    52: 616,
-    53: 685,
-    54: 733,
-    55: 753,
-    56: 802,
-    57: 821,
-    58: 870,
-    59: 889,
-    60: 958,
-    61: 1007,
-    62: 1026,
-    63: 1075,
-    64: 1094,
-    65: 1163,
-    66: 1211,
-    67: 1231,
-    68: 1280,
-    69: 1299,
-    70: 1348,
-    71: 1367,
-    72: 1436,
-    73: 1485,
-    74: 1504,
-    75: 1553,
-    76: 1572,
-    77: 1640,
-    78: 1689,
-    79: 1709,
-    80: 1757,
-    81: 1776,
-    82: 1825,
-    83: 1845,
+NOTES_X = {36: 2, 37: 26.0, 38: 35, 39: 60.0, 40: 69, 41: 103.5, 42: 128.0, 43: 137.5, 44: 162.0, 45: 171.5, 46: 196.5, 47: 206.0, 48: 240.0, 49: 264.5, 50: 274.0, 51: 298.5, 52: 308.0, 53: 342.5, 54: 366.5, 55: 376.5, 56: 401.0, 57: 410.5, 58: 435.0, 59: 444.5, 60: 479.0, 61: 503.5, 62: 513.0, 63: 537.5, 64: 547.0, 65: 581.5, 66: 605.5, 67: 615.5, 68: 640.0, 69: 649.5, 70: 674.0, 71: 683.5, 72: 718.0, 73: 742.5, 74: 752.0, 75: 776.5, 76: 786.0, 77: 820.0, 78: 844.5, 79: 854.5, 80: 878.5, 81: 888.0, 82: 912.5, 83: 922.5, 84 : 957,85: 980.5, 86:990.5, 87: 1015.5,88:1025
 }
+
+
+
 
 
 class NoteDisplay:
@@ -92,6 +47,7 @@ class NoteDisplay:
         self.window = Tk()
         self.window.title("Jazz Piano Trainer")
         self.window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
+        self.window.resizable(False,False)
 
         self.frame = Frame(self.window)
         self.frame.pack(side=RIGHT)
@@ -117,8 +73,8 @@ class NoteDisplay:
             self.canvas, text="REPLAY", command=button_replay_callback, height=2, width=20
         )
 
-        self.q_label = Label(self.canvas, text="Press NEXT to Start", font=("Arial", 25))
-        self.q2_label = Label(self.canvas, text="", font=("Arial", 25))
+        self.q_label = Label(self.canvas, text="Choose a Mode and press Next", font=("Arial", 25))
+        self.theory_type_name = Label(self.canvas, text="abc", font=("Arial", 25))
 
         self.a_img = ImageTk.PhotoImage(Image.open("images/placeholder.png"))
         self.a_label = Label(self.canvas, text="")
@@ -127,15 +83,15 @@ class NoteDisplay:
         self.option_var.set("MODES")
         self.selected_option = "MODES"
         self.option_widget = OptionMenu(
-            self.canvas, self.option_var, "MODES", "CHORDS", command=self.option_update
+            self.canvas, self.option_var, "MODES", "CHORDS", "SCALES" , command=self.option_update
         )
 
-        self.canvas.create_window(300, 58, window=self.option_widget)
-        self.canvas.create_window(300, 100, window=self.button)
-        self.canvas.create_window(300, 150, window=self.button_replay)
-        self.canvas.create_window(700, 100, window=self.q_label)
-        self.canvas.create_window(700, 200, window=self.q2_label)
-        self.canvas.create_window(1000, 100, window=self.a_label)
+        self.canvas.create_window(150, 58, window=self.option_widget)
+        self.canvas.create_window(150, 100, window=self.button)
+        self.canvas.create_window(150, 150, window=self.button_replay)
+        self.canvas.create_window(500, 100, window=self.q_label)
+        self.canvas.create_window(500, 200, window=self.theory_type_name)
+        self.canvas.create_window(800, 100, window=self.a_label)
 
     def option_update(self, selected_option) -> None:
         """
@@ -148,7 +104,7 @@ class NoteDisplay:
         Get a note`s image
         """
         real_note = None
-        for n in [72, 60, 48, 36]:
+        for n in [84,72, 60, 48, 36]:
             if note_id >= n:
                 real_note = note_id - n
                 break
@@ -187,5 +143,5 @@ class NoteDisplay:
         new_img = ImageTk.PhotoImage(Image.open(image_path))
         self.a_label.config(image=new_img)
         self.a_label.image = new_img
-        self.q2_label.config(text=txt)
-        self.q2_label.text = txt
+        self.theory_type_name.config(text=txt)
+        self.theory_type_name.text = txt

@@ -54,8 +54,8 @@ def button_handler() -> None:
     else:
         theory_item = th.get_mode()
 
-    good_notes = [n + i for i in [36, 48, 60, 72] for n in theory_item["notes"]]
-    required_notes = [[n + 36, n + 48, n + 60, n + 72] for n in theory_item["notes"]]
+    good_notes = [n + i for i in [36, 48, 60, 72, 84] for n in theory_item["notes"]]
+    required_notes = [[n + 36, n + 48, n + 60, n + 72, n + 84] for n in theory_item["notes"]]
 
     file_path = generate_path(theory_item)
     img_path = "images/" + file_path + "01.png"
@@ -92,6 +92,7 @@ def note_handler(note: mido.Message) -> None:
     Midi message event handler
     """
     if note.type in ["note_on", "note_off"]:
+
         note_id = int(note.note) if note.note is not None else -1
         if note.type == "note_on":
 
