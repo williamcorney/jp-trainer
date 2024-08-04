@@ -1,29 +1,20 @@
 import sys
 import threading
-
 import mido
-from pygame import mixer
-
 from note_display import NoteDisplay
-from sampler import Sampler
 from theory import SCALES, Theory
 
 notes_on: list = []
 good_notes: list = []
 required_notes: list = []
 theory_item: dict
-
 note_ui: NoteDisplay
 replay_file: str
 img_path: str
 answer_text: str
 timer: threading.Timer = None
 
-mixer.init()
-
-sampler: Sampler
 th = Theory()
-
 
 def timer_func() -> None:
     """
@@ -49,9 +40,7 @@ def replay_handler() -> None:
     """
     Replay function UI handler
     """
-    if replay_file:
-        mixer.music.stop()
-        mixer.music.play()
+    pass
 
 
 def button_handler() -> None:
@@ -85,14 +74,13 @@ def button_handler() -> None:
     file_path += f"{inv_id:02d}"
     audio_path = "audio/" + file_path + ".mp3"
     replay_file = audio_path
-    mixer.music.load(audio_path)
-    mixer.music.play()
+
     note_ui.update_question(q)
     note_ui.update_answer("images/placeholder.png", "")
 
     if timer:
         timer.cancel()
-    timer = threading.Timer(10, timer_func)
+    timer = threading.Timer(0, timer_func)
     timer.start()
 
 
@@ -106,7 +94,7 @@ def note_handler(note: mido.Message) -> None:
     if note.type in ["note_on", "note_off"]:
         note_id = int(note.note) if note.note is not None else -1
         if note.type == "note_on":
-            sampler.play(note_id, note.velocity)
+
             is_green = False
             if note_id in good_notes:
                 ids_to_remove = []
@@ -125,7 +113,6 @@ def note_handler(note: mido.Message) -> None:
             if note.note not in notes_on:
                 notes_on.append(note.note)
         elif note.type == "note_off":
-            sampler.stop(note_id)
             note_ui.remove_note(note_id)
             if note_id in notes_on:
                 notes_on.remove(note_id)
@@ -134,7 +121,6 @@ def note_handler(note: mido.Message) -> None:
 try:
     ignore_velocity = True if "--ignore_velocity" in sys.argv else False
     sustain = True if "--sustain" in sys.argv else False
-    sampler = Sampler(mixer, ignore_velocity, sustain)
     portname = (mido.get_input_names()[0]) # replace with your MIDI INPUT
     with mido.open_input(portname, callback=note_handler) as port:
         print("Using {}".format(port))
