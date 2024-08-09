@@ -2,18 +2,18 @@ from copy import deepcopy
 from secrets import choice
 
 SCALES = {
-    0: "C",
-    1: "C#",
-    2: "D",
-    3: "Eb",
-    4: "E",
-    5: "F",
-    6: "Gb",
-    7: "G",
-    8: "Ab",
-    9: "A",
-    10: "Bb",
-    11: "B",
+    60: "C",
+    61: "C#",
+    62: "D",
+    63: "Eb",
+    64: "E",
+    65: "F",
+    66: "Gb",
+    67: "G",
+    68: "Ab",
+    69: "A",
+    70: "Bb",
+    71: "B",
 }
 
 SCALES_MIDI = {
@@ -95,22 +95,6 @@ MODES_MIDI = {
 
 MODES_DIR = {0: "ascending", 1: "descending"}
 
-# play type
-# 0 base - chord
-# 1 same base - inverted chord
-# 2 same base - inverted chord
-# 3 base - single notes up
-# 4 base - single notes down
-# 5 1st inversion - chord
-# 6 1st inversion - single notes up
-# 7 1st inversion - single notes down
-# 8 2nd inversion - chord
-# 9 2nd inversion - single notes up
-# 10 2nd inversion - single notes down
-# 11 3rd inversion - chord
-# 12 3rd inversion - single notes up
-# 13 3rd inversion - single notes down
-
 CHORD_INVERSIONS = {
     0: "base - chord",
     1: "bass root - 2nd inversion chord",
@@ -142,52 +126,30 @@ TheoryItem = {
     "dir": "",
     "notes": [],
 }
-
-
 class Theory:
-    """
-    A main class to handle a music theory related processing
-    """
 
     def __init__(self) -> None:
         pass
-
     def _get_random_chord_inversion_id(self) -> int:
-        """
-        Generate a random chord inversion
-        """
         return choice(BASIC_CHORD_INVERSIONS)
-
     def _get_common_items(self, type: str) -> dict:
-        """
-        Generate and set a common settings for chords and modes
-        """
+
         item = deepcopy(TheoryItem)
         item["type"] = type
-
         scale_id = choice(list(SCALES.keys()))
         item["scale_id"] = scale_id
         item["scale"] = SCALES[scale_id]
-
         mode_dir = choice(list(MODES_DIR.keys()))
         item["dir_id"] = mode_dir
         item["dir"] = MODES_DIR[mode_dir]
-
         return item
-
     def _get_notes_for_scale(self, note_start, notes) -> list:
-        """
-        Get all notes present in a provided scale
-        """
         modified_notes = [note_start]
         for n in notes:
             modified_notes.append(modified_notes[-1] + n)
         return modified_notes
-
     def get_mode(self) -> dict:
-        """
-        Generate a mode to guess
-        """
+
         mode = self._get_common_items("Mode")
         mode_id = choice(list(MODES.keys()))
         mode["id"] = mode_id
@@ -195,17 +157,13 @@ class Theory:
         mode["desc"] = MODES_DESC[mode_id]
         mode["notes"] = self._get_notes_for_scale(mode["scale_id"], MODES_MIDI[mode_id])
         return mode
-
     def get_chord(self) -> dict:
-        """
-        Generate a chord to guess
-        """
+
         chord = self._get_common_items("Chord")
         chord_id = choice(BASIC_CHORDS)
         chord["id"] = chord_id
         chord["name"] = CHORDS[chord_id]
         chord["desc"] = CHORDS[chord_id]
-        chord["notes"] = self._get_notes_for_scale(
-            chord["scale_id"], CHORDS_MIDI[chord_id]
-        )
+        chord["notes"] = self._get_notes_for_scale(chord["scale_id"], CHORDS_MIDI[chord_id])
+        print (CHORDS_MIDI[chord_id])
         return chord
