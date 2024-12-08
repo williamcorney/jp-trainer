@@ -7,4 +7,4 @@ class Theory():
         print ('function called')
 
 
-        return [  random.randint(60,72)]
+        return [ 60]
