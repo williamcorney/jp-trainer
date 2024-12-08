@@ -8,7 +8,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         # Step 1: Create a QGraphicsScene
         self.scene = QGraphicsScene()
-        self.requirednotes =[ ]
+        self.requirednotes =[60 ]
         # Add some items to the scene
         pixmap = QGraphicsPixmapItem(QPixmap("./images/keys.png"))
         self.scene.addItem(pixmap)
