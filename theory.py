@@ -4,7 +4,5 @@ class Theory():
         pass
 
     def set_notes (self):
-        print ('function called')
 
-
-        return [ 60]
+        return [60]
