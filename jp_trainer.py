@@ -1,3 +1,4 @@
+#jp_trainer.py
 from gui import MainWindow
 from PyQt6.QtWidgets import QApplication
 import mido
@@ -14,4 +15,3 @@ if __name__ == "__main__":
     # Open MIDI input and use note_handler directly as the callback
     with mido.open_input(callback=lambda message: note_handler(message, window)) as inport:
         sys.exit(app.exec())
-
